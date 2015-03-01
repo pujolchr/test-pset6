@@ -1,0 +1,3 @@
+GET /cat.html HTTP/1.1
+GET /hello.html HTTP/1.1
+GET /hello.php?q=Ronald HTTP/1.1
