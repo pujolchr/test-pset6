@@ -1,0 +1,47 @@
+#! /usr/bin/env bash
+# usage :
+# test-pset6 adresse port1 port2 [testfile]
+
+# TODO option : hostname help
+
+usage () {
+    cat << END
+usage: test-pset6 host port port [FILE]
+END
+}
+
+if [[ "$#" != 4 ]] && [[ "$#" != 3 ]];
+then
+    usage
+    exit
+fi
+
+# extracting parameters
+adresse=$1
+ports=( $2 $3)
+port1=$2
+port2=$3
+testfile=$
+mapfile lines <${4:-"test.txt"}
+
+# creation of tmp log file
+touch tmp-telnet-{$port1,$port2}
+chmod +x tmp-telnet*
+
+IFS=$'\n'
+for line in ${lines[*]};
+do
+    for port in ${ports[*]};
+    do
+        cat << END > tmp-telnet-$port
+echo "open $adresse $port"
+sleep 2
+echo $line
+echo
+echo
+sleep 2
+END
+     ./tmp-telnet-$port | telnet | tee result$port
+    done
+done
+unset IFS
