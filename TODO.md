@@ -2,8 +2,7 @@
     * typo in README.md
     * Docstring for test-pset6
     * more help in usage
-    * nice exit if no test file
-        test if lines is ""
+    * ~~nice exit if no test file~~
     * more comment
     * nice output
     * Paternity tmp-telnet-$port

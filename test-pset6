@@ -2,8 +2,6 @@
 # usage :
 # test-pset6 adresse port1 port2 [testfile]
 
-# TODO option : hostname help
-
 usage () {
     cat << END
 usage: test-pset6 host port port [FILE]
@@ -21,8 +19,15 @@ adresse=$1
 ports=( $2 $3)
 port1=$2
 port2=$3
-testfile=$
-mapfile lines <${4:-"test.txt"}
+testfile=${4:-"test.txt"}
+# exit if no test file is provided and readable
+if ! [[ -r $testfile ]];
+then
+    echo "no test file is provided"
+    exit 1
+fi
+
+mapfile lines <$testfile
 
 # creation of tmp log file
 touch tmp-telnet-{$port1,$port2}
@@ -33,6 +38,7 @@ for line in ${lines[*]};
 do
     for port in ${ports[*]};
     do
+
         cat << END > tmp-telnet-$port
 echo "open $adresse $port"
 sleep 2
@@ -41,7 +47,9 @@ echo
 echo
 sleep 2
 END
+
      ./tmp-telnet-$port | telnet | tee result$port
     done
 done
 unset IFS
+rm tmp-telnet* result*
