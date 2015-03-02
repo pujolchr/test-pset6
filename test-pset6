@@ -30,15 +30,18 @@ fi
 mapfile lines <$testfile
 
 # creation of tmp log file
-touch tmp-telnet-{$port1,$port2}
-chmod +x tmp-telnet*
+touch tmp-telnet-{$port1,$port2} 
+chmod +x tmp-telnet* 
 
 IFS=$'\n'
 for line in ${lines[*]};
 do
+    echo
+    echo "Test: $line on "
     for port in ${ports[*]};
     do
 
+        echo "$adresse"":""$port"
         cat << END > tmp-telnet-$port
 echo "open $adresse $port"
 sleep 2
@@ -48,8 +51,16 @@ echo
 sleep 2
 END
 
-     ./tmp-telnet-$port | telnet | tee result$port
+     ./tmp-telnet-$port | telnet > result$port
     done
+    diff -q result{$port1,$port2} | tee result
+    if [[ -s result ]];
+    then
+        echo -e "\e[31mFAILED\e[0m"
+        diff -y result{$port1,$port2} | tee -a log-pset6
+    else
+        echo -e "\e[32mPASSED\e[0m"
+    fi
 done
 unset IFS
-rm tmp-telnet* result*
+# rm tmp-telnet* result*
