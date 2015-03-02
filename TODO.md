@@ -1,6 +1,7 @@
 #TODO#
 
 * ~~typo in README.md~~
+* content log-failed
 * Docstring for test-pset6
 * more help in usage
 * ~~nice exit if no test file~~
