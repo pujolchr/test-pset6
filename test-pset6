@@ -45,7 +45,7 @@ END
         fi
 
     done
-    echo -e "------------------------\n $testnum TEST : $testpassed PASSED :$(($testnum - $testpassed)) FAILED \n" |  tee -a ../$logfile
+    echo -e "-----------------------------\n $testnum TEST : $testpassed PASSED : $(($testnum - $testpassed)) FAILED \n" |  tee -a ../$logfile
 }
 
 # check usage
@@ -86,5 +86,4 @@ maintest
 
 unset IFS
 cd ..
-
-#rm -r "tmp-test-pset6"
+rm -r "tmp-test-pset6"
