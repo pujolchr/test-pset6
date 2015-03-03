@@ -76,7 +76,7 @@ logfile="log-test-pset6-$(date +%H-%M-%S)"
 touch $logfile
 
 # creation of tmp log file and tmp script file
-#mkdir "tmp-test-pset6"
+mkdir "tmp-test-pset6"
 cd "tmp-test-pset6"
 touch result-{$port1,$port2}
 touch tmp-telnet-{$port1,$port2} 
