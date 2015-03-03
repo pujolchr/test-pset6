@@ -8,6 +8,47 @@ usage: test-pset6 host port port [FILE]
 END
 }
 
+maintest () {
+    IFS=$'\n'
+
+    declare -i testnum=0
+    declare -i testpassed=0
+    for line in ${lines[*]};
+    do
+        testnum+=1
+        echo -e "\n-------------------------\nTest $testnum :\n $line on " | tee -a  ../$logfile
+        
+        for port in ${ports[*]};
+        do
+            echo -e "\n$adresse"":""$port \n-------------------------" | tee -a ../$logfile
+            cat << END > tmp-telnet-$port
+echo "open $adresse $port"
+sleep 2
+echo $line
+echo
+echo
+sleep 2
+END
+         ./tmp-telnet-$port | telnet 2>/dev/null | tee result-$port | tee -a ../$logfile
+        done
+        
+        echo "diff : "
+        diff -s -u1  result-{$port1,$port2} | tee result | tee -a ../$logfile
+        grep -q "are identical$" result
+        
+        if [[ $? = 0 ]];
+        then
+            echo -e "\e[32mPASSED\e[0m\n" | tee -a ../$logfile
+            testpassed+=1
+        else
+            echo -e "\e[31mFAILED\e[0m\n" | tee -a ../$logfile
+        fi
+
+    done
+    echo -e "------------------------\n $testnum TEST : $testpassed PASSED :$(($testnum - $testpassed)) FAILED \n" |  tee -a ../$logfile
+}
+
+# check usage
 if [[ "$#" != 4 ]] && [[ "$#" != 3 ]];
 then
     usage
@@ -20,47 +61,30 @@ ports=( $2 $3)
 port1=$2
 port2=$3
 testfile=${4:-"test.txt"}
+
 # exit if no test file is provided and readable
 if ! [[ -r $testfile ]];
 then
-    echo "no test file is provided"
+    echo "can not read test file"
     exit 1
 fi
 
 mapfile lines <$testfile
 
-# creation of tmp log file
+# cretion log file
+logfile="log-test-pset6-$(date +%H-%M-%S)"
+touch $logfile
+
+# creation of tmp log file and tmp script file
+#mkdir "tmp-test-pset6"
+cd "tmp-test-pset6"
+touch result-{$port1,$port2}
 touch tmp-telnet-{$port1,$port2} 
 chmod +x tmp-telnet* 
 
-IFS=$'\n'
-for line in ${lines[*]};
-do
-    echo
-    echo "Test: $line on "
-    for port in ${ports[*]};
-    do
+maintest 
 
-        echo "$adresse"":""$port"
-        cat << END > tmp-telnet-$port
-echo "open $adresse $port"
-sleep 2
-echo $line
-echo
-echo
-sleep 2
-END
-
-     ./tmp-telnet-$port | telnet > result$port
-    done
-    diff -q result{$port1,$port2} | tee result
-    if [[ -s result ]];
-    then
-        echo -e "\e[31mFAILED\e[0m"
-        diff -y result{$port1,$port2} | tee -a log-pset6
-    else
-        echo -e "\e[32mPASSED\e[0m"
-    fi
-done
 unset IFS
-# rm tmp-telnet* result*
+cd ..
+
+#rm -r "tmp-test-pset6"
