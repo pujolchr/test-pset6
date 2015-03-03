@@ -1,13 +1,13 @@
 #TODO#
 
 * ~~typo in README.md~~
-* content log-failed
+* ~~content log~~
 * Docstring for test-pset6
 * more help in usage
 * ~~nice exit if no test file~~
 * more comment
-* nice output
+* ~~nice output~~
 * Paternity tmp-telnet-$port
 * option -i for localhost
-* diff part
-* resume of tests pass/failed
+* ~~diff part~~
+* ~~resume of tests pass/failed~~
