@@ -1,1 +1,2 @@
-GET /cat.html HTTP/1.1
+GET          /cat.html HTTP/1.1
+   GET /cat.html HTTP/1.1
