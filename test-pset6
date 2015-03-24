@@ -13,6 +13,7 @@ maintest () {
 
     declare -i testnum=0
     declare -i testpassed=0
+
     for line in ${lines[*]};
     do
         testnum+=1
@@ -21,6 +22,8 @@ maintest () {
         for port in ${ports[*]};
         do
             echo -e "\n$adresse"":""$port \n-------------------------" | tee -a ../$logfile
+            
+            # create the request passed to telnet
             cat << END > tmp-telnet-$port
 echo "open $adresse $port"
 sleep 2
@@ -29,9 +32,11 @@ echo
 echo
 sleep 2
 END
+        # pass the request to telnet and the  answer to result
          ./tmp-telnet-$port | telnet 2>/dev/null | tee result-$port | tee -a ../$logfile
         done
-        
+
+        # Compare the two answer
         echo "diff : "
         diff -s -u1  result-{$port1,$port2} | tee result | tee -a ../$logfile
         grep -q "are identical$" result
@@ -80,7 +85,7 @@ mkdir "tmp-test-pset6"
 cd "tmp-test-pset6"
 touch result-{$port1,$port2}
 touch tmp-telnet-{$port1,$port2} 
-chmod +x tmp-telnet* 
+chmod +x tmp-telnet-{$port1,$port2}  
 
 maintest 
 
