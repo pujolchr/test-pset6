@@ -3,11 +3,13 @@
 * ~~typo in README.md~~
 * ~~content log~~
 * Docstring for test-pset6
+* getops for option
+* enable comment for test file
 * more help in usage
 * ~~nice exit if no test file~~
 * more comment
 * ~~nice output~~
-* Paternity tmp-telnet-$port
 * option -i for localhost
+* -v verbose option for output
 * ~~diff part~~
 * ~~resume of tests pass/failed~~
