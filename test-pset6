@@ -43,10 +43,10 @@ END
         
         if [[ $? = 0 ]];
         then
-            echo -e "\e[32mPASSED\e[0m\n" | tee -a ../$logfile
+            echo -e "\n\e[32mPASSED\e[0m\n" | tee -a ../$logfile
             testpassed+=1
         else
-            echo -e "\e[31mFAILED\e[0m\n" | tee -a ../$logfile
+            echo -e "\n\e[31mFAILED\e[0m\n" | tee -a ../$logfile
         fi
 
     done
