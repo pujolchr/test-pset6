@@ -15,10 +15,10 @@ If there is any diffeence for a particular request
 the test is considered faile for this request.
 
 ### How to install in the cs50 appliance.
-* using  Git:
+* using  Git:  
   `$ git clone https://github.com/pujolchr/test-pset6`
 
-* using wget:
+* using wget:  
   `$ wget https://github.com/pujolchr/test-pset6/archive/master.zip`  
   `$ unzip master.zip`
 
