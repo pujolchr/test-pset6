@@ -37,7 +37,7 @@ END
         done
 
         # Compare the two answer
-        echo "diff : "
+        echo "\ndiff : "
         diff -s -u1  result-{$port1,$port2} | tee result | tee -a ../$logfile
         grep -q "are identical$" result
         
