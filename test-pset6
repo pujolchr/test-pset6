@@ -17,11 +17,11 @@ maintest () {
     for line in ${lines[*]};
     do
         testnum+=1
-        echo -e "\n-------------------------\nTest $testnum :\n $line on " | tee -a  ../$logfile
+        echo -e "\n-------------------------\nTest $testnum :\n $line on " | tee -a "../$logfile"
         
         for port in ${ports[*]};
         do
-            echo -e "\n$adresse"":""$port \n-------------------------" | tee -a ../$logfile
+            echo -e "\n$adresse"":""$port \n-------------------------" | tee -a "../$logfile"
             
             # create the request passed to telnet
             cat << END > tmp-telnet-$port
@@ -33,24 +33,24 @@ echo
 sleep 2
 END
         # pass the request to telnet and the  answer to result
-         ./tmp-telnet-$port | telnet 2>/dev/null | tee result-$port | tee -a ../$logfile
+         "./tmp-telnet-$port" | telnet 2>/dev/null | tee "result-$port" | tee -a "../$logfile"
         done
 
         # Compare the two answer
-        echo "\ndiff : "
-        diff -s -u1  result-{$port1,$port2} | tee result | tee -a ../$logfile
+        printf "\ndiff : "
+        diff -s -u1  result-{$port1,$port2} | tee result | tee -a "../$logfile"
         grep -q "are identical$" result
         
         if [[ $? = 0 ]];
         then
-            echo -e "\n\e[32mPASSED\e[0m\n" | tee -a ../$logfile
+            echo -e "\n\e[32mPASSED\e[0m\n" | tee -a "../$logfile"
             testpassed+=1
         else
-            echo -e "\n\e[31mFAILED\e[0m\n" | tee -a ../$logfile
+            echo -e "\n\e[31mFAILED\e[0m\n" | tee -a "../$logfile"
         fi
 
     done
-    echo -e "-----------------------------\n $testnum TEST : $testpassed PASSED : $(($testnum - $testpassed)) FAILED \n" |  tee -a ../$logfile
+    echo -e "-----------------------------\n $testnum TEST : $testpassed PASSED : $(($testnum - $testpassed)) FAILED \n" |  tee -a "../$logfile"
 }
 
 # check usage
@@ -74,11 +74,11 @@ then
     exit 1
 fi
 
-mapfile lines <$testfile
+mapfile lines <"$testfile"
 
 # cretion log file
 logfile="log-test-pset6-$(date +%H-%M-%S)"
-touch $logfile
+touch "$logfile"
 
 # creation of tmp log file and tmp script file
 mkdir "tmp-test-pset6"
