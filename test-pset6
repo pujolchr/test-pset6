@@ -17,7 +17,7 @@ maintest () {
     for line in ${lines[*]};
     do
         testnum+=1
-        echo -e "\n-------------------------\nTest $testnum :\n $line on " | tee -a "../$logfile"
+        echo -e "\n-------------------------\nTest $testnum :\n $line " | tee -a "../$logfile"
         
         for port in ${ports[*]};
         do
@@ -50,7 +50,7 @@ END
         fi
 
     done
-    echo -e "-----------------------------\n $testnum TEST : $testpassed PASSED : $(($testnum - $testpassed)) FAILED \n" |  tee -a "../$logfile"
+    echo -e "-----------------------------\n $testnum TEST : $testpassed PASSED : $((testnum - testpassed)) FAILED \n" |  tee -a "../$logfile"
 }
 
 # check usage
